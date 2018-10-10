@@ -87,7 +87,46 @@ class Weather:
         return randint(0, self._max_wind_speed)
 
 
-class Competition(object):
+class NotificationManager:
+    def __init__(self):
+        self.__subscribers = set()
+
+    def subscribe(self, subscriber):
+        if subscriber not in self.__subscribers:
+            self.__subscribers.add(subscriber)
+
+    def unsubcribe(self, subscriber):
+        if subscriber in self.__subscribers:
+            self.__subscribers.remove(subscriber)
+
+    def notify_subscribers(self, message):
+        for subscriber in self.__subscribers:
+            subscriber.update(message)
+
+
+class AbstractObserver(ABC):
+    @abstractmethod
+    def update(self, message):
+        pass
+
+
+class SmsSubscriber(AbstractObserver):
+    def __init__(self, phone):
+        self.__phone = phone
+
+    def update(self, message):
+        print('%s recieved message!' % self.__phone)
+
+
+class EmailSubscriber(AbstractObserver):
+    def __init__(self, email):
+        self.__email = email
+
+    def update(self, message):
+        print("%s recieved message: %s" % (self.__email, message))
+
+
+class Competition(NotificationManager):
     __instance = None
 
     def __new__(cls, *args):
@@ -96,6 +135,7 @@ class Competition(object):
         return Competition.__instance
 
     def __init__(self, distance, weather=None):
+        super().__init__()
         self.distance = distance
         self.weather = weather or Weather()
 
@@ -107,7 +147,11 @@ class Competition(object):
 
         print("---")
         results_sorted = sorted(results, key=lambda x: x[1])
+        winner_name = results_sorted[0][0]
+        winner_time = results_sorted[0][1]
         print("Winner is", results_sorted[0][0])
+
+        self.notify_subscribers(f"{winner_name} came first with {winner_time}")
 
 
 cars = [
@@ -122,4 +166,8 @@ cars = [
 if __name__ == "__main__":
     weather = Weather(35)
     competition = Competition(10000, weather)
+
+    competition.subscribe(EmailSubscriber("test@example.com"))
+    competition.subscribe(SmsSubscriber("+79990000000"))
+
     competition.start(cars)
