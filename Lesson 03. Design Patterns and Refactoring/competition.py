@@ -7,6 +7,26 @@ class AbstractCar(ABC):
     def race(self, distance, weather):
         pass
 
+    @property
+    @abstractmethod
+    def name(self):
+        return None
+
+    @property
+    @abstractmethod
+    def max_speed(self):
+        return None
+
+    @property
+    @abstractmethod
+    def drag_coef(self):
+        return None
+
+    @property
+    @abstractmethod
+    def time_to_max(self):
+        return None
+
 
 class Car(AbstractCar):
     CAR_SPECS = {
@@ -67,9 +87,33 @@ class Car(AbstractCar):
         return time
 
 
-class VerboseCar(AbstractCar):
+class NullCarDecorator(AbstractCar):
     def __init__(self, obj):
         self.obj = obj
+
+    def race(self, distance, weather):
+        return self.obj.race(distance, weather)
+
+    @property
+    def name(self):
+        return self.obj.name
+
+    @property
+    def max_speed(self):
+        return self.obj.max_speed
+
+    @property
+    def drag_coef(self):
+        return self.obj.drag_coef
+
+    @property
+    def time_to_max(self):
+        return self.obj.time_to_max
+
+
+class VerboseCar(NullCarDecorator):
+    def __init__(self, obj):
+        super().__init__(obj)
 
     def race(self, distance, weather):
         print("Car <%s> on start" % self.obj.name)
@@ -142,7 +186,7 @@ class Competition(NotificationManager):
     def start(self, cars):
         results = []
         for car in cars:
-            time = VerboseCar(car).race(self.distance, self.weather)
+            time = car.race(self.distance, self.weather)
             results.append((car.name, time))
 
         print("---")
@@ -154,20 +198,22 @@ class Competition(NotificationManager):
         self.notify_subscribers(f"{winner_name} came first with {winner_time}")
 
 
-cars = [
-    Car('ferrary'),
-    Car('bugatti'),
-    Car('toyota'),
-    Car('lada'),
-    Car('sx4'),
-    Car('drandulet', max_speed=120, drag_coef=0.42, time_to_max=63)
-]
-
 if __name__ == "__main__":
     weather = Weather(35)
     competition = Competition(10000, weather)
 
     competition.subscribe(EmailSubscriber("test@example.com"))
     competition.subscribe(SmsSubscriber("+79990000000"))
+
+    cars = [
+        Car('ferrary'),
+        Car('bugatti'),
+        Car('toyota'),
+        Car('lada'),
+        Car('sx4'),
+        Car('drandulet', max_speed=120, drag_coef=0.42, time_to_max=63)
+    ]
+
+    cars = map(lambda x: VerboseCar(x), cars)
 
     competition.start(cars)
