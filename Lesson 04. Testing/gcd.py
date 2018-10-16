@@ -6,6 +6,16 @@ def gcd(m: int, n: int) -> int:
     :param n:
     :return:
     """
+
+    if not isinstance(m, int) or not isinstance(n, int):
+        raise ValueError("GCD defined only for integer values")
+
+    if m == 0 and n == 0:
+        raise ValueError("GCD is not defined for N=M=0")
+
+    m = abs(m)
+    n = abs(n)
+
     if m == 0 and n != 0:
         return n
     
@@ -25,7 +35,7 @@ def gcd(m: int, n: int) -> int:
         return gcd(m // 2, n)
 
     if m % 2 == 1 and n % 2 == 0:
-        return gcd(n, m // 2)
+        return gcd(m, n // 2)
 
     m, n = max(m, n), min(m, n)
-    return gcd((m - n) // 2, n)
+    return gcd(m - n, n)

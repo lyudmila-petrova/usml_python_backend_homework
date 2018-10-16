@@ -8,8 +8,8 @@ class TestGCD(unittest.TestCase):
     def test_zeros(self):
         self.assertRaises(ValueError, gcd, 0, 0)
 
-    def test_fractional(self):  #
-        self.assertRaises(ArithmeticError, gcd, 2.5, 1)
+    def test_fractional(self):
+        self.assertRaises(ValueError, gcd, 2.5, 1)
 
     def test_coprime_numbers(self):
         cases = {
