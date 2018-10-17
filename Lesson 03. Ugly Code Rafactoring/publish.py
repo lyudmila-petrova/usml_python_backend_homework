@@ -3,7 +3,7 @@ import sys
 import time
 
 from AppConfig import AppConfig
-from QueueSender import QueueSender
+from publishers.QueueSender import QueueSender
 from publishers.RandomMessageGenerator import RandomMessageGenerator
 
 generator = RandomMessageGenerator()
