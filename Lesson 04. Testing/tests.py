@@ -31,3 +31,6 @@ class TestGCD(unittest.TestCase):
         for params, result in cases.items():
             with self.subTest(case=params):
                 self.assertEqual(gcd(*params), result)
+
+    def test_inversed_arguments_order(self):
+        self.assertEqual(gcd(3, 15), gcd(15, 3))
