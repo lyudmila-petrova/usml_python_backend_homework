@@ -27,6 +27,6 @@ https://gist.github.com/dmitry-sobolev/4d569008dec89d886ccb1f8166483271
 
 ```
 $ pipenv install
-$ pipenv run python main.py
+$ pipenv run python -m unittest tests.py
 ```
 
