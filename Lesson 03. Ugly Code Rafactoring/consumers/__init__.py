@@ -10,3 +10,4 @@ from ConsumerOne import ConsumerOne
 from ConsumerTwo import ConsumerTwo
 from ConsumerThree import ConsumerThree
 from ConsumerMail import ConsumerMail
+from ConsumerSms import ConsumerSms

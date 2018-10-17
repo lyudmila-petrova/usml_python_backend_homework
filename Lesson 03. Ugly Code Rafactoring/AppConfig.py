@@ -9,3 +9,5 @@ class AppConfig:
     SITE_MAIL = 'info@my-domain.com'
 
     SMTP_HOST = 'smtp_host'
+
+    SMSRU_APP_ID = '<here>'
