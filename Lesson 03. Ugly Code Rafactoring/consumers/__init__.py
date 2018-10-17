@@ -9,3 +9,4 @@ from ThreadedAsyncConsumer import ThreadedAsyncConsumer
 from ConsumerOne import ConsumerOne
 from ConsumerTwo import ConsumerTwo
 from ConsumerThree import ConsumerThree
+from ConsumerMail import ConsumerMail

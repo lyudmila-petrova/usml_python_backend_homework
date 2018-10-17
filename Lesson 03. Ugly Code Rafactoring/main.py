@@ -25,11 +25,17 @@ def main():
         connection_params=AppConfig.RABBITMQ_CONNECTION_PARAMS,
         database_connection=app.create_new_dn_conn()
     ))
-
+    
     manager.add(ConsumerThree(
         queue_name='queue_three',
         connection_params=AppConfig.RABBITMQ_CONNECTION_PARAMS,
         database_connection=app.create_new_dn_conn()
+    ))
+
+    manager.add(ConsumerMail(
+        queue_name='queue_mail',
+        connection_params=AppConfig.RABBITMQ_CONNECTION_PARAMS,
+        mailer=app.mailer
     ))
 
     try:
