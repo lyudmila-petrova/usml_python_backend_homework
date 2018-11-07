@@ -8,10 +8,6 @@ folk = [Person(i) for i in range(1, 31)]
 healers = [Healer(damn, DAY_START) for damn in DAMNS]
 
 
-def is_game_over():
-    return time() - DAY_START > 24
-
-
 def main():
     print("Game started at 0")
     print("Everybody sleep")
